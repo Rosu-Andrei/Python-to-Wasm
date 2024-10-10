@@ -24,13 +24,14 @@ export class AppComponent implements OnInit {
   loadWasmModule() {
     // Dynamically load the Emscripten-generated JavaScript file
     const script = document.createElement('script');
-    script.src = 'assets/hello2.js';  // Path to the Emscripten-generated JavaScript file
+    script.src = 'assets/add_and_print.js';  // Path to the Emscripten-generated JavaScript file
     script.onload = () => {
       // After the script is loaded, the Module object (from Emscripten) will be available
       (window as any).Module.onRuntimeInitialized = () => {
         // Now you can access the exported functions from the WebAssembly module
-        const hello = (window as any).Module._hello_world();  // Note the underscore
-        console.log('Hello from WebAssembly:', hello);
+        const sum = (window as any).Module._sum(1, 2);
+        (window as any).Module._displayResult(sum);
+        console.log('Hello from WebAssembly:', sum);
       };
     };
     document.body.appendChild(script);
